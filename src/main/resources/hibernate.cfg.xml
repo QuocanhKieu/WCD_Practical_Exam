@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+        "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+
+        <!-- Database connection settings -->
+        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>
+        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/player_evaluation</property>
+        <property name="hibernate.connection.username">root</property>
+        <property name="hibernate.connection.password"></property> <!-- No password -->
+
+        <!-- JDBC connection pool settings -->
+        <property name="hibernate.connection.pool_size">1</property>
+
+        <!-- SQL dialect -->
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+
+        <!-- Show executed SQL statements in the log -->
+        <property name="hibernate.show_sql">true</property>
+
+        <!-- Automatically update the database schema -->
+        <property name="hibernate.hbm2ddl.auto">validate</property>
+
+        <!-- Context configuration -->
+        <property name="hibernate.current_session_context_class">thread</property>
+
+        <!-- Entity class mappings -->
+        <mapping class="hibernate_wcd.entity.Indexer" />
+        <mapping class="hibernate_wcd.entity.Player" />
+        <mapping class="hibernate_wcd.entity.PlayerIndex" />
+
+    </session-factory>
+</hibernate-configuration>
+
+        <!--<?xml version="1.0" encoding="UTF-8"?>-->
+<!--<!DOCTYPE hibernate-configuration PUBLIC-->
+<!--        "-//Hibernate/Hibernate Configuration DTD 3.0//EN"-->
+<!--        "http://hibernate.org/dtd/hibernate-configuration-3.0.dtd">-->
+<!--<hibernate-configuration>-->
+<!--    <session-factory>-->
+<!--        <property name="hibernate.connection.driver_class">com.mysql.cj.jdbc.Driver</property>-->
+<!--        <property name="hibernate.connection.url">jdbc:mysql://localhost:3306/t2305m_wcd</property>-->
+<!--        <property name="hibernate.connection.username">root</property>-->
+<!--        <property name="hibernate.connection.password">root</property>-->
+<!--        <property name="hibernate.connection.pool_size">1</property>-->
+<!--        <property name="hibernate.current_session_context_class">thread</property>-->
+<!--        <property name="hibernate.show_sql">true</property>-->
+<!--        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>-->
+
+<!--    </session-factory>-->
+<!--</hibernate-configuration>-->

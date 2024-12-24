@@ -13,7 +13,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 
-@WebServlet(value = "/players")
+@WebServlet(value = "/player-indexes")
 public class PlayerController extends HttpServlet {
     private PlayerService playerService;
 
@@ -40,7 +40,7 @@ public class PlayerController extends HttpServlet {
         req.setAttribute("playerIndexs", playerIndexs);
 
         // Forward to JSP for rendering
-        RequestDispatcher rd = req.getRequestDispatcher("index.jsp");
+        RequestDispatcher rd = req.getRequestDispatcher("player_indexes/index.jsp");
         rd.forward(req, resp);
     }
 

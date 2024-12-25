@@ -1,10 +1,10 @@
 package hibernate_wcd.service.impl;
-
-import hibernate_wcd.dto.req.ClassroomReq;
-import hibernate_wcd.dto.res.ClassroomRes;
+import hibernate_wcd.entity.Indexer;
 import hibernate_wcd.entity.Player;
 import hibernate_wcd.entity.PlayerIndex;
+import hibernate_wcd.repository.Impl.IndexerRepositoryImpl;
 import hibernate_wcd.repository.Impl.PlayerRepositoryImpl;
+import hibernate_wcd.repository.IndexerRepository;
 import hibernate_wcd.repository.PlayerRepository;
 import hibernate_wcd.service.PlayerService;
 
@@ -14,9 +14,12 @@ import java.util.List;
 public class PlayerServiceImpl implements PlayerService {
     private PlayerRepository playerRepository;
 
+    private IndexerRepository indexerRepository;
+
     public PlayerServiceImpl() {
         // Initialize the repository
         this.playerRepository = new PlayerRepositoryImpl();
+        this.indexerRepository = new IndexerRepositoryImpl();
     }
 
     @Override
@@ -32,6 +35,12 @@ public class PlayerServiceImpl implements PlayerService {
         return playersList;
     }
 
+    @Override
+    public List<Indexer> getAllIndexers() {
+        List<Indexer> indexersList = indexerRepository.all();
+        return indexersList;
+    }
+
 
     @Override
     public void save(Player player) {
@@ -44,6 +53,11 @@ public class PlayerServiceImpl implements PlayerService {
     }
 
     @Override
+    public List<Player> findByName(String name) {
+        return  playerRepository.findByName(name);
+    }
+
+    @Override
     public void update(Player player) {
         playerRepository.update(player);
     }
@@ -51,5 +65,20 @@ public class PlayerServiceImpl implements PlayerService {
     @Override
     public void delete(Long id) {
         playerRepository.delete(id);
+    }
+
+    @Override
+    public Indexer getIndexerById(int indexerId) {
+        return indexerRepository.findById(indexerId);
+    }
+
+    @Override
+    public void savePlayerIndex(PlayerIndex playerIndex) {
+        playerRepository.savePlayerIndex(playerIndex);
+    }
+
+    @Override
+    public void deletePlayerIndex(Long playerId, Long indexId) {
+        playerRepository.deletePlayerIndex(playerId, indexId);
     }
 }

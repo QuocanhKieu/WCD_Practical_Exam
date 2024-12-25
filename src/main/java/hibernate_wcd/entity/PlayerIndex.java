@@ -15,12 +15,14 @@ public class PlayerIndex {
     private int id;
 
     private float value;
+
+    // Relationship to Player
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "player_id", nullable = false) // `player_id` must exist in `player_index` table
+    @JoinColumn(name = "player_id", nullable = true)  // player_id must exist in player_index table
     private Player player;
 
+    // Relationship to Indexer
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "index_id", nullable = false) // `index_id` must exist in `player_index` table
+    @JoinColumn(name = "index_id", nullable = true)  // index_id must exist in player_index table
     private Indexer indexer;
-
 }

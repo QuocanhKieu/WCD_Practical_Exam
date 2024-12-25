@@ -48,6 +48,20 @@ public class PlayerRepositoryImpl implements PlayerRepository {
         }
     }
 
+    @Override
+    public void savePlayerIndex(PlayerIndex playerIndex) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+            session.save(playerIndex);
+            transaction.commit();
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+        }
+    }
+
+
+
 
     @Override
     public void save(Player player) {
@@ -92,12 +106,50 @@ public class PlayerRepositoryImpl implements PlayerRepository {
             if (transaction != null) transaction.rollback();
         }
     }
+    @Override
+    public void deletePlayerIndex(Long playerId, Long indexId) {
+        Transaction transaction = null;
+
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            // Cast Long to Integer
+            Integer playerIdAsInt = playerId.intValue();
+            Integer indexIdAsInt = indexId.intValue();
+
+            // Query to fetch the specific PlayerIndex to be deleted
+            PlayerIndex playerIndex = session.createQuery(
+                            "FROM PlayerIndex WHERE player.playerId = :playerId AND indexer.indexId = :indexId",
+                            PlayerIndex.class
+                    )
+                    .setParameter("playerId", playerIdAsInt)
+                    .setParameter("indexId", indexIdAsInt)
+                    .uniqueResult();
+
+            if (playerIndex != null) {
+                // Delete the found PlayerIndex
+                session.delete(playerIndex);
+                transaction.commit();
+            } else {
+                // Handle case where the playerIndex does not exist
+                throw new Exception("PlayerIndex not found with playerId=" + playerId + " and indexId=" + indexId);
+            }
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        }
+    }
+
+
+
+
 
     @Override
     public List<Player> findByName(String name) {
+
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.createQuery("from Player where name = :name", Player.class)
-                    .setParameter("name", name).list();
+            return session.createQuery("from Player where trim(name) = :name", Player.class)
+                    .setParameter("name", name.trim()).list();
         }
     }
 }

@@ -23,7 +23,8 @@ public class Indexer {
     @Column(name = "value_max")  // Explicitly map indexId field to the index_id column in the DB
     private float valueMax;
 
-    @OneToMany(mappedBy = "indexer", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    // Relationship to PlayerIndex (set up properly)
+    @OneToMany(mappedBy = "indexer", fetch = FetchType.LAZY)
     private List<PlayerIndex> playerIndexes;
 
 }

@@ -13,28 +13,18 @@ import java.util.List;
 public class Player {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "player_id")  // Explicitly map indexId field to the index_id column in the DB
+    @Column(name = "player_id")
     private int playerId;
-    @Column(name = "name", unique = true)
 
+    @Column(name = "name")
     private String name;
-
     @Column(name = "full_name")
-    private String fullName;
-
+    private String fullName = "";
+    @Column(name = "age")
     private String age;
-    public Player(int playerId, String name, String fullName, String age) {
-        this.playerId = playerId;
-        this.name = name;
-        this.fullName = fullName;
-        this.age = age;
-    }
+    @Column(name = "index_id")
+    private int indexId;
 
-    @OneToMany(mappedBy = "player", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "player", fetch = FetchType.LAZY) // Remove cascade = CascadeType.ALL
     private List<PlayerIndex> playerIndexes;
-
-    public Player() {
-
-    }
-
 }

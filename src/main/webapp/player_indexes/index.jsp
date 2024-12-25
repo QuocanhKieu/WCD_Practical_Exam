@@ -1,6 +1,7 @@
 <%@ page import="hibernate_wcd.entity.Player" %>
 <%@ page import="java.util.List" %>
 <%@ page import="hibernate_wcd.entity.PlayerIndex" %>
+<%@ page import="hibernate_wcd.entity.Indexer" %>
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -12,8 +13,16 @@
 </head>
 <body class="bg-light">
 <div class="container mt-5">
+    <%
+        String error = (String) request.getAttribute("error");
+        if (error != null) {
+    %>
+    <div class="alert alert-danger"><%= error %></div>
+    <% } %>
+
     <h2 class="text-center text-warning mb-4">Player Information</h2>
-    <form id="playerForm" class="mb-4">
+
+    <form id="playerForm" class="mb-4" method="POST" action="/T2305M_WCD_war_exploded/player-indexes">
         <div class="row">
             <div class="col-md-3 mb-3">
                 <label for="playerName" class="form-label">Player name</label>
@@ -21,15 +30,18 @@
             </div>
             <div class="col-md-2 mb-3">
                 <label for="playerAge" class="form-label">Player age</label>
-                <input type="number" id="playerAge" class="form-control" name="age" placeholder="Player age" required>
+                <input type="number" id="playerAge" class="form-control" name="age" placeholder="Player age" max="150" required>
             </div>
             <div class="col-md-3 mb-3">
                 <label for="indexName" class="form-label">Index name</label>
                 <select id="indexName" class="form-select" name="indexName" required>
                     <option value="">Select index</option>
-                    <option value="speed">Speed</option>
-                    <option value="strength">Strength</option>
-                    <option value="accurate">Accurate</option>
+                    <%
+                        List<Indexer> indexers = (List<Indexer>) request.getAttribute("indexers");
+                        for (Indexer indexer : indexers) {
+                    %>
+                    <option value="<%= indexer.getIndexId() %>"><%= indexer.getName() %></option>
+                    <% } %>
                 </select>
             </div>
             <div class="col-md-2 mb-3">
@@ -63,7 +75,8 @@
             <td><%= playerIndex.getValue()%></td>
             <td>
                 <a href="edit?id=<%= playerIndex.getId() %>" class="btn btn-warning btn-sm">Edit</a>
-                <a href="delete?id=<%= playerIndex.getId() %>" class="btn btn-danger btn-sm">Delete</a>
+                <a href="/T2305M_WCD_war_exploded/player-indexes?action=delete&playerId=<%= playerIndex.getPlayer().getPlayerId() %>&indexId=<%= playerIndex.getIndexer().getIndexId() %>"
+                   class="btn btn-danger btn-sm">Delete</a>
             </td>
         </tr>
         <% } %>

@@ -23,4 +23,8 @@ public interface PlayerService {
     void savePlayerIndex(PlayerIndex playerIndex);
 
     void deletePlayerIndex(Long playerId, Long indexId);
+
+
+    PlayerIndex findPlayerIndex(Long playerId, Long indexId);
+    void updatePlayerIndex(PlayerIndex playerIndex);
 }

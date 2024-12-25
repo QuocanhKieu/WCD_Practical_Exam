@@ -14,4 +14,6 @@ public interface PlayerRepository extends Repository<Player, Long> {
     void savePlayerIndex(PlayerIndex playerIndex);
 
     void deletePlayerIndex(Long playerId, Long indexId);
+    PlayerIndex findPlayerIndex(Long playerId, Long indexId);
+    void updatePlayerIndex(PlayerIndex playerIndex);
 }

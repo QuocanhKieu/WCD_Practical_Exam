@@ -81,4 +81,16 @@ public class PlayerServiceImpl implements PlayerService {
     public void deletePlayerIndex(Long playerId, Long indexId) {
         playerRepository.deletePlayerIndex(playerId, indexId);
     }
+
+    @Override
+    public PlayerIndex findPlayerIndex(Long playerId, Long indexId) {
+
+        return playerRepository.findPlayerIndex(playerId, indexId);
+    }
+
+    @Override
+    public void updatePlayerIndex(PlayerIndex playerIndex) {
+        playerRepository.updatePlayerIndex(playerIndex);
+
+    }
 }

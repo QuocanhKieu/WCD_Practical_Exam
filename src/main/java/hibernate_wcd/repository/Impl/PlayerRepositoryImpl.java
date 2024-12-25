@@ -78,7 +78,7 @@ public class PlayerRepositoryImpl implements PlayerRepository {
     @Override
     public Player findById(Long id) {
         try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-            return session.get(Player.class, id);
+            return session.get(Player.class, id.intValue());
         }
     }
 
@@ -152,4 +152,45 @@ public class PlayerRepositoryImpl implements PlayerRepository {
                     .setParameter("name", name.trim()).list();
         }
     }
+    @Override
+    public void updatePlayerIndex(PlayerIndex playerIndex) {
+        Transaction transaction = null;
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            transaction = session.beginTransaction();
+
+            // You should fetch the existing PlayerIndex first if you want to make sure it's present
+            PlayerIndex existingPlayerIndex = session.get(PlayerIndex.class, playerIndex.getId());
+
+            if (existingPlayerIndex != null) {
+                // Update the values
+                existingPlayerIndex.setValue(playerIndex.getValue()); // Update the value field
+
+                // Update the PlayerIndex
+                session.update(existingPlayerIndex);
+                transaction.commit();
+            } else {
+                throw new Exception("PlayerIndex not found for id=" + playerIndex.getId());
+            }
+        } catch (Exception e) {
+            if (transaction != null) transaction.rollback();
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public PlayerIndex findPlayerIndex(Long playerId, Long indexId) {
+        try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+            // Cast Long to Integer (if needed based on your column types)
+            Integer playerIdAsInt = playerId.intValue();
+            Integer indexIdAsInt = indexId.intValue();
+
+            // Query to find a PlayerIndex by playerId and indexId
+            return session.createQuery(
+                            "FROM PlayerIndex WHERE player.playerId = :playerId AND indexer.indexId = :indexId", PlayerIndex.class)
+                    .setParameter("playerId", playerIdAsInt)
+                    .setParameter("indexId", indexIdAsInt)
+                    .uniqueResult();
+        }
+    }
+
 }
